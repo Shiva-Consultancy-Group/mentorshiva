@@ -1,0 +1,81 @@
+/* Standalone Inquiry Submission Form — based on reference at
+   https://inquiry.msmeintelligence.in/inquiry-submission-form
+   Kept as a separate module (CSS + JS) per product requirement. */
+
+.scg-inquiry { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: #191c1d; }
+.scg-inquiry * { box-sizing: border-box; }
+
+.scg-inquiry__header { border-bottom: 1px solid #c5c6cd; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+.scg-inquiry__eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #a17f3b; display: block; margin-bottom: .75rem; }
+.scg-inquiry__title { font-family: 'Newsreader', serif; font-size: 2rem; font-weight: 500; line-height: 1.2; margin: 0 0 .5rem; color: #0A192F; }
+.scg-inquiry__subtitle { font-size: 1rem; color: #50606f; margin: 0; }
+
+.scg-inquiry__progress { display: flex; align-items: center; gap: .75rem; margin: 1.25rem 0; font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #50606f; }
+.scg-inquiry__progress-bar { flex: 1; height: 4px; background: #e1e3e4; position: relative; }
+.scg-inquiry__progress-fill { position: absolute; inset: 0 auto 0 0; background: #a17f3b; transition: width .3s ease; }
+
+.scg-inquiry__section { border: 1px solid #c5c6cd; padding: 2rem; margin-bottom: 1.5rem; }
+.scg-inquiry__section-title { font-family: 'Newsreader', serif; font-size: 1.125rem; font-weight: 600; margin: 0 0 1.25rem; color: #0A192F; display: flex; align-items: center; gap: .5rem; }
+.scg-inquiry__section-title::before { content: ''; display: block; width: 4px; height: 1.125rem; background: #a17f3b; }
+
+.scg-inquiry__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.scg-inquiry__field { display: flex; flex-direction: column; gap: .375rem; }
+.scg-inquiry__field--full { grid-column: 1 / -1; }
+.scg-inquiry__label { font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: #44474d; }
+.scg-inquiry__label .req { color: #ba1a1a; margin-left: 2px; }
+.scg-inquiry__input,
+.scg-inquiry__select,
+.scg-inquiry__textarea {
+  width: 100%; padding: .75rem .875rem; font-size: .9375rem;
+  background: #f3f4f5; border: 1px solid #c5c6cd; border-radius: 0;
+  color: #191c1d; transition: border-color .15s, background .15s;
+}
+.scg-inquiry__input:focus,
+.scg-inquiry__select:focus,
+.scg-inquiry__textarea:focus {
+  outline: none; background: #ffffff; border-color: #0A192F; box-shadow: inset 0 -2px 0 0 #a17f3b;
+}
+.scg-inquiry__textarea { min-height: 110px; resize: vertical; }
+.scg-inquiry__hint { font-size: .75rem; color: #75777e; margin-top: .125rem; }
+.scg-inquiry__error { font-size: .75rem; color: #ba1a1a; margin-top: .25rem; }
+
+.scg-inquiry__checkbox { display: flex; gap: .625rem; align-items: flex-start; }
+.scg-inquiry__checkbox input { margin-top: 3px; }
+
+.scg-inquiry__file-drop {
+  border: 1px dashed #75777e; padding: 1.5rem; text-align: center;
+  background: #f8f9fa; cursor: pointer; transition: background .15s, border-color .15s;
+}
+.scg-inquiry__file-drop:hover { background: #edeeef; border-color: #0A192F; }
+.scg-inquiry__file-drop strong { color: #0A192F; }
+.scg-inquiry__file-list { list-style: none; padding: 0; margin: .75rem 0 0; font-size: .875rem; }
+.scg-inquiry__file-list li { display: flex; justify-content: space-between; padding: .375rem 0; border-bottom: 1px solid #e1e3e4; }
+.scg-inquiry__file-list button { background: none; border: none; color: #ba1a1a; cursor: pointer; font-size: .75rem; }
+
+.scg-inquiry__actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+.scg-inquiry__btn {
+  padding: .9rem 2rem; font-size: .75rem; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase; border-radius: 0;
+  cursor: pointer; transition: all .15s; border: 1px solid transparent;
+}
+.scg-inquiry__btn--primary { background: #0A192F; color: #ffffff; }
+.scg-inquiry__btn--primary:hover { box-shadow: inset 0 -2px 0 0 #a17f3b; }
+.scg-inquiry__btn--primary:disabled { opacity: .6; cursor: not-allowed; }
+.scg-inquiry__btn--secondary { background: transparent; color: #0A192F; border-color: #c5c6cd; }
+.scg-inquiry__btn--secondary:hover { border-color: #0A192F; }
+
+.scg-inquiry__privacy { font-size: .75rem; color: #75777e; margin-top: 1rem; text-align: center; }
+.scg-inquiry__privacy a { color: #0A192F; text-decoration: underline; text-underline-offset: 3px; }
+
+.scg-inquiry__success {
+  padding: 2.5rem; border: 1px solid #a17f3b; background: #fffdf7;
+  text-align: center;
+}
+.scg-inquiry__success-icon { font-size: 3rem; color: #a17f3b; }
+.scg-inquiry__success-title { font-family: 'Newsreader', serif; font-size: 1.75rem; margin: .5rem 0; color: #0A192F; }
+.scg-inquiry__ref { font-family: 'JetBrains Mono', monospace; background: #0A192F; color: #e9c176; padding: .25rem .75rem; font-size: .875rem; }
+
+@media (max-width: 720px) {
+  .scg-inquiry__grid { grid-template-columns: 1fr; }
+  .scg-inquiry__section { padding: 1.25rem; }
+}

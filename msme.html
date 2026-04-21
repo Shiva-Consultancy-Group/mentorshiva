@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary-container": "#a17f3b",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary": "#000000",
+                        "outline": "#75777e",
+                        "background": "#f8f9fa",
+                        "inverse-on-surface": "#f0f1f2",
+                        "secondary-container": "#d1e1f4",
+                        "inverse-primary": "#b9c7e4",
+                        "on-primary-fixed": "#0d1c32",
+                        "tertiary-container": "#261900",
+                        "on-secondary-container": "#556474",
+                        "secondary": "#50606f",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container": "#edeeef",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#394857",
+                        "error": "#ba1a1a",
+                        "on-surface": "#191c1d",
+                        "on-tertiary-fixed-variant": "#5d4201",
+                        "secondary-fixed-dim": "#b8c8da",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#e9c176",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#515f78",
+                        "surface-bright": "#f8f9fa",
+                        "on-tertiary-fixed": "#261900",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#39475f",
+                        "surface-container-low": "#f3f4f5",
+                        "on-error": "#ffffff",
+                        "primary": "#000000",
+                        "on-primary-container": "#76849f",
+                        "secondary-fixed": "#d4e4f6",
+                        "on-secondary-fixed": "#0d1d2a",
+                        "primary-container": "#0d1c32",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#44474d",
+                        "primary-fixed-dim": "#b9c7e4",
+                        "primary-fixed": "#d6e3ff",
+                        "tertiary-fixed": "#ffdea5",
+                        "on-background": "#191c1d",
+                        "outline-variant": "#c5c6cd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "gutter": "32px",
+                        "margin-edge": "64px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "h3-subheading": ["Newsreader"],
+                        "body-lg": ["Inter"],
+                        "h1-display": ["Newsreader"],
+                        "body-md": ["Inter"],
+                        "citation": ["Inter"],
+                        "h2-authority": ["Newsreader"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3-subheading": ["1.75rem", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-lg": ["1.125rem", {"lineHeight": "1.7", "fontWeight": "400"}],
+                        "h1-display": ["4.5rem", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["1rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "citation": ["0.875rem", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "h2-authority": ["2.5rem", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "label-caps": ["0.75rem", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .trust-signal-border {
+            border-left: 2px solid #a17f3b;
+        }
+        .executive-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 32px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md">
+<!-- TopNavBar -->
+<nav class="bg-white dark:bg-slate-950 docked full-width top-0 border-b border-slate-200 dark:border-slate-800 flat no shadows z-50 sticky">
+<div class="max-w-[1280px] mx-auto px-8 w-full flex justify-between items-center h-20">
+<a href="index.html" class="text-xl font-bold tracking-widest text-slate-900 dark:text-white font-['Newsreader']">
+                Shiva Consultancy Group
+            </a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors font-['Newsreader'] tracking-tight text-sm font-medium" href="lobbying.html">Lobbying Vault</a>
+<a class="text-slate-900 dark:text-white border-b-2 border-slate-900 dark:border-white pb-1 font-['Newsreader'] tracking-tight text-sm font-medium" href="msme.html">MSME Hub</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors font-['Newsreader'] tracking-tight text-sm font-medium" href="intelligence.html">Intelligence Portal</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors font-['Newsreader'] tracking-tight text-sm font-medium" href="sustainability.html">Sustainability</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors font-['Newsreader'] tracking-tight text-sm font-medium" href="index.html#insights">Whitepapers</a>
+</div>
+<div class="flex items-center space-x-6">
+<a href="intelligence.html" class="bg-primary text-on-primary px-6 py-2 text-sm font-label-caps uppercase tracking-widest hover:bg-opacity-90 transition-all active:scale-[0.98] border-b-0 hover:border-b-2 border-[#a17f3b]">
+                    Consult with Us
+                </a>
+<a href="https://wa.me/919979021275" target="_blank" rel="noopener" title="WhatsApp Concierge +91 99790 21275" class="material-symbols-outlined text-slate-900 dark:text-slate-50 cursor-pointer" data-icon="chat">chat</a>
+</div>
+</div>
+</nav>
+<main class="max-w-[1280px] mx-auto px-8">
+<!-- Hero Section -->
+<section class="mt-20 mb-section-gap">
+<div class="executive-grid">
+<div class="col-span-12 md:col-span-8">
+<span class="text-label-caps font-label-caps text-on-tertiary-container mb-4 block uppercase">MSME Growth &amp; Mentoring Hub</span>
+<h1 class="text-h1-display font-h1-display text-primary mb-8">Empowering the engine of India's growth.</h1>
+<p class="text-body-lg font-body-lg text-secondary max-w-2xl mb-10">
+                        Bridging the gap between institutional wisdom and entrepreneurial agility. Our "Business Sustainability" framework provides small enterprises with high-level financial precision and global compliance standards.
+                    </p>
+<div class="flex items-center gap-6">
+<button class="bg-primary text-on-primary px-8 py-4 font-label-caps uppercase tracking-widest text-sm hover:border-b-2 border-[#a17f3b] transition-all">
+                            Join the Mentorship Program
+                        </button>
+<div class="flex items-center gap-2">
+<span class="w-8 h-[1px] bg-outline"></span>
+<span class="text-citation font-citation text-outline">Verified by SCG Compliance Lab</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 self-end">
+<div class="border border-outline-variant p-8 bg-surface-container-low relative">
+<div class="absolute -top-3 -right-3 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 text-label-caps font-label-caps uppercase">Live Portal</div>
+<h3 class="text-h3-subheading font-h3-subheading mb-4">MSME Vital Signs</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="text-label-caps font-label-caps text-secondary uppercase">Compliance Index</span>
+<span class="text-h3-subheading font-h3-subheading">98.2%</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="text-label-caps font-label-caps text-secondary uppercase">Market Access</span>
+<span class="text-h3-subheading font-h3-subheading">+14.5%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Focus Pillars (Asymmetric Layout) -->
+<section class="mb-section-gap">
+<h2 class="text-h2-authority font-h2-authority text-primary mb-16 text-center">Institutional Foundations</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-unit*4">
+<!-- Finance -->
+<div class="p-10 border border-outline-variant hover:border-primary transition-all duration-300 bg-white">
+<span class="material-symbols-outlined text-4xl mb-6 text-primary" data-icon="account_balance">account_balance</span>
+<h3 class="text-h3-subheading font-h3-subheading mb-4">Strategic Finance</h3>
+<p class="text-body-md font-body-md text-secondary mb-8">Access to institutional capital and sophisticated treasury management tailored for mid-market scale.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-citation font-citation">
+<span class="w-2 h-2 bg-primary"></span> Capital Structuring
+                        </li>
+<li class="flex items-center gap-3 text-citation font-citation">
+<span class="w-2 h-2 bg-primary"></span> Risk Mitigation
+                        </li>
+</ul>
+</div>
+<!-- Compliance -->
+<div class="p-10 border border-outline-variant hover:border-primary transition-all duration-300 trust-signal-border bg-surface-container-lowest">
+<span class="material-symbols-outlined text-4xl mb-6 text-primary" data-icon="gavel">gavel</span>
+<h3 class="text-h3-subheading font-h3-subheading mb-4">Compliance Protocol</h3>
+<p class="text-body-md font-body-md text-secondary mb-8">Ensuring small enterprises operate with the same regulatory rigor as global conglomerates.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-citation font-citation">
+<span class="w-2 h-2 bg-primary"></span> ESG Frameworks
+                        </li>
+<li class="flex items-center gap-3 text-citation font-citation">
+<span class="w-2 h-2 bg-primary"></span> Global Standards
+                        </li>
+</ul>
+</div>
+<!-- Market -->
+<div class="p-10 border border-outline-variant hover:border-primary transition-all duration-300 bg-white">
+<span class="material-symbols-outlined text-4xl mb-6 text-primary" data-icon="analytics">analytics</span>
+<h3 class="text-h3-subheading font-h3-subheading mb-4">Market Expansion</h3>
+<p class="text-body-md font-body-md text-secondary mb-8">Data-driven intelligence to navigate international markets and domestic competitive landscapes.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-citation font-citation">
+<span class="w-2 h-2 bg-primary"></span> Competitive Intelligence
+                        </li>
+<li class="flex items-center gap-3 text-citation font-citation">
+<span class="w-2 h-2 bg-primary"></span> Supply Chain Integrity
+                        </li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Mentoring Bento Grid -->
+<section class="mb-section-gap">
+<div class="mb-12 flex justify-between items-end border-b border-outline-variant pb-6">
+<div>
+<span class="text-label-caps font-label-caps text-on-tertiary-container uppercase">Program Architecture</span>
+<h2 class="text-h2-authority font-h2-authority text-primary">Mentoring Ecosystem</h2>
+</div>
+<p class="text-citation font-citation text-outline max-w-sm italic">"Mentorship is the transmission of institutional DNA from one generation of leaders to the next."</p>
+</div>
+<div class="grid grid-cols-12 grid-rows-2 gap-8 h-auto md:h-[600px]">
+<div class="col-span-12 md:col-span-8 row-span-1 border border-outline-variant p-8 flex flex-col justify-between group overflow-hidden relative">
+<div class="z-10">
+<h3 class="text-h3-subheading font-h3-subheading mb-4">Executive Mentorship Path</h3>
+<p class="text-body-md font-body-md text-secondary max-w-md">One-on-one sessions with former C-suite leaders focusing on long-term institutional stability.</p>
+</div>
+<div class="z-10 flex gap-4 mt-6">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 text-label-caps font-label-caps">Elite Access</span>
+<span class="bg-surface-container-high text-secondary px-3 py-1 text-label-caps font-label-caps">30 Slots Remaining</span>
+</div>
+<div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[200px]" data-icon="architecture">architecture</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 row-span-2 border border-outline-variant p-8 bg-primary text-on-primary flex flex-col justify-between">
+<div>
+<span class="text-label-caps font-label-caps text-tertiary-fixed-dim uppercase mb-4 block">Sustainability Focus</span>
+<h3 class="text-h3-subheading font-h3-subheading text-white mb-6">Compliance Checklist Portal</h3>
+<p class="text-body-md font-body-md text-primary-container mb-8">Download our proprietary 24-point compliance audit tool for Indian MSMEs.</p>
+</div>
+<button class="w-full border border-white/30 py-4 font-label-caps uppercase tracking-widest text-sm hover:bg-white hover:text-primary transition-all">
+                        Access Checklist
+                    </button>
+</div>
+<div class="col-span-12 md:col-span-4 row-span-1 border border-outline-variant p-8 hover:bg-surface-container-low transition-colors">
+<h4 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Growth Story #042</h4>
+<h3 class="text-body-lg font-body-lg font-bold mb-4">Scale: From Regional to Continental</h3>
+<p class="text-citation font-citation text-secondary">How a textile MSME leveraged our financial framework to expand to 4 European markets.</p>
+</div>
+<div class="col-span-12 md:col-span-4 row-span-1 border border-outline-variant p-8 hover:bg-surface-container-low transition-colors">
+<h4 class="text-label-caps font-label-caps text-secondary uppercase mb-2">Technical Insight</h4>
+<h3 class="text-body-lg font-body-lg font-bold mb-4">GST Sustainability Audit</h3>
+<p class="text-citation font-citation text-secondary">Optimizing indirect tax compliance for long-term cash flow predictability.</p>
+</div>
+</div>
+</section>
+<!-- Final CTA Area -->
+<section class="mb-section-gap py-20 bg-white border border-outline-variant text-center relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary-container"></div>
+<div class="max-w-2xl mx-auto px-6 relative z-10">
+<h2 class="text-h2-authority font-h2-authority mb-6">Build a Legacy, Not Just a Business.</h2>
+<p class="text-body-lg font-body-lg text-secondary mb-10">Institutional wisdom is no longer reserved for the giants. Join the hub today and transform your MSME into a pillar of sustainable growth.</p>
+<div class="flex flex-col md:flex-row justify-center gap-4">
+<button class="bg-primary text-on-primary px-10 py-5 font-label-caps uppercase tracking-widest text-sm active:scale-95 transition-transform border-b-0 hover:border-b-2 border-[#a17f3b]">
+                        Join the Mentorship Program
+                    </button>
+<button class="border border-outline px-10 py-5 font-label-caps uppercase tracking-widest text-sm hover:bg-surface transition-all">
+                        View Growth Stories
+                    </button>
+</div>
+</div>
+<!-- Background Decorative Texture -->
+<div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[300px]" data-icon="verified_user">verified_user</span>
+</div>
+</section>
+<div id="scg-resources" data-page="msme" data-title="MSME Growth Toolkit"></div></main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-900 full-width border-t tonal shift from white to ultra-light grey">
+<div class="max-w-[1280px] mx-auto px-8 py-16 grid grid-cols-1 md:grid-cols-2 gap-12">
+<div>
+<div class="text-lg font-bold text-slate-900 dark:text-white font-['Newsreader'] mb-6">
+                    Shiva Consultancy Group
+                </div>
+<p class="text-slate-500 dark:text-slate-400 font-['Newsreader'] text-xs uppercase tracking-widest leading-relaxed max-w-sm">
+                    © 2024 Shiva Consultancy Group. Institutional Wisdom. Sustainable Growth.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-[0.2em]">Protocols</h4>
+<nav class="flex flex-col space-y-2">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline-offset-4 hover:underline transition-opacity duration-200 font-['Newsreader'] text-xs uppercase tracking-widest" href="#">Privacy Protocol</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline-offset-4 hover:underline transition-opacity duration-200 font-['Newsreader'] text-xs uppercase tracking-widest" href="#">Terms of Engagement</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline-offset-4 hover:underline transition-opacity duration-200 font-['Newsreader'] text-xs uppercase tracking-widest" href="#">ESG Framework</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-[0.2em]">Presence</h4>
+<nav class="flex flex-col space-y-2">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline-offset-4 hover:underline transition-opacity duration-200 font-['Newsreader'] text-xs uppercase tracking-widest" href="#">Global Offices</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline-offset-4 hover:underline transition-opacity duration-200 font-['Newsreader'] text-xs uppercase tracking-widest" href="#">Press Room</a>
+</nav>
+</div>
+</div>
+</div>
+</footer>
+<script src="/assets/config.js"></script><script type="module" src="/assets/resources-widget.js"></script></body></html>

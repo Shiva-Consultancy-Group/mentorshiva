@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#d4e4f6",
+                    "tertiary-fixed": "#ffdea5",
+                    "surface-variant": "#e1e3e4",
+                    "on-secondary-fixed": "#0d1d2a",
+                    "inverse-surface": "#2e3132",
+                    "on-tertiary-container": "#a17f3b",
+                    "inverse-primary": "#b9c7e4",
+                    "on-tertiary-fixed-variant": "#5d4201",
+                    "surface-container-highest": "#e1e3e4",
+                    "error": "#ba1a1a",
+                    "surface-container": "#edeeef",
+                    "on-surface-variant": "#44474d",
+                    "on-secondary-fixed-variant": "#394857",
+                    "on-primary-container": "#76849f",
+                    "surface-tint": "#515f78",
+                    "on-primary-fixed": "#0d1c32",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#556474",
+                    "surface-bright": "#f8f9fa",
+                    "secondary": "#50606f",
+                    "primary": "#000000",
+                    "outline": "#75777e",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f4f5",
+                    "surface": "#f8f9fa",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "secondary-container": "#d1e1f4",
+                    "surface-dim": "#d9dadb",
+                    "secondary-fixed-dim": "#b8c8da",
+                    "tertiary": "#000000",
+                    "on-primary-fixed-variant": "#39475f",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#0d1c32",
+                    "on-tertiary-fixed": "#261900",
+                    "background": "#f8f9fa",
+                    "surface-container-high": "#e7e8e9",
+                    "on-surface": "#191c1d",
+                    "outline-variant": "#c5c6cd",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#261900",
+                    "primary-fixed": "#d6e3ff",
+                    "on-background": "#191c1d",
+                    "tertiary-fixed-dim": "#e9c176",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-on-surface": "#f0f1f2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "32px",
+                    "container-max": "1280px",
+                    "section-gap": "120px",
+                    "margin-edge": "64px"
+            },
+            "fontFamily": {
+                    "h3-subheading": ["Newsreader"],
+                    "h1-display": ["Newsreader"],
+                    "label-caps": ["Inter"],
+                    "h2-authority": ["Newsreader"],
+                    "citation": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "h3-subheading": ["1.75rem", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "h1-display": ["4.5rem", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-caps": ["0.75rem", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "h2-authority": ["2.5rem", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "citation": ["0.875rem", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-md": ["1rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["1.125rem", {"lineHeight": "1.7", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .trust-badge {
+            background-color: #d4af37; /* Metallic Gold concept fallback */
+            color: #0d1c32;
+        }
+        .nav-border-active {
+            border-bottom: 2px solid #d4af37;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #d4af37 !important;
+            box-shadow: 0 0 0 1px #d4af37;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container">
+<!-- Top Navigation Bar (SCG standard) -->
+<header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+<nav class="max-w-[1280px] mx-auto px-8 w-full flex justify-between items-center h-20">
+<a href="index.html" class="text-xl font-bold tracking-widest text-slate-900 uppercase font-h1-display">Shiva Consultancy Group</a>
+<div class="hidden md:flex items-center space-x-8 font-['Newsreader'] tracking-tight text-sm font-medium">
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="lobbying.html">Lobbying Vault</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="msme.html">MSME Hub</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="intelligence.html">Intelligence Portal</a>
+<a class="text-slate-900 border-b-2 border-[#a17f3b] pb-1 transition-colors" href="sustainability.html">Sustainability</a>
+<a class="text-slate-500 hover:text-slate-900 transition-colors" href="index.html#insights">Whitepapers</a>
+</div>
+<div class="flex items-center space-x-6">
+<a href="intelligence.html" class="bg-[#0A192F] text-white px-6 py-2.5 text-xs font-label-caps uppercase tracking-widest hover:border-b-2 hover:border-[#a17f3b] transition-all">Consult with Us</a>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative bg-[#0A192F] text-white overflow-hidden py-32">
+<div class="max-w-[1280px] mx-auto px-8 relative z-10 flex flex-col md:flex-row items-center gap-16">
+<div class="w-full md:w-3/5">
+<div class="mb-6 flex items-center gap-4">
+<span class="w-12 h-px bg-amber-500"></span>
+<span class="font-label-caps text-label-caps text-amber-500 uppercase tracking-widest">Sustainability &amp; Innovation</span>
+</div>
+<h1 class="font-h1-display text-h1-display mb-8 leading-[1.1]">
+                    Engineering Resilience. <br/>
+<span class="text-slate-300">Securing Future Value.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-slate-300 max-w-2xl mb-12">
+                    We integrate Environmental, Social, and Governance (ESG) frameworks into the core of corporate strategy to drive long-term sustainability and institutional growth.
+                </p>
+<div class="flex items-center gap-8">
+<button class="bg-amber-500 text-[#0A192F] px-10 py-4 font-label-caps text-label-caps tracking-widest font-bold">
+                        EXPLORE METHODOLOGY
+                    </button>
+<div class="flex items-center gap-2">
+<span class="font-citation text-citation italic text-slate-400">Institutional Wisdom Series Vol. IV</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-2/5 relative">
+<div class="aspect-[4/5] border border-slate-700 p-4">
+<img class="w-full h-full object-cover grayscale opacity-80 brightness-75 transition-all hover:grayscale-0 hover:opacity-100 duration-700" data-alt="Modern architectural glass facade reflecting a clear sky with sharp geometric lines and sophisticated blue and slate tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2Ihtrxe6QuyDay0cjyM-uzCgaTTnw_PqggQUIturYlKIP5KztqFAAo9Yhqzdmh0f9dm0ewKJgVgfpXm1fj2b52p9uAt6aPnJ2yb60Cvo-MgB3vcDuM07n0I9ywfPfujRyiCpAWyjYN68BF7obJPLpYCd_T62M6tGGUe-x1MBQxkwKQ7WdPy_4FKcJubROBBVKJzOn4BS9V9lRykLVTAx4vbFSvQRINBTgrOlgYQybAYhym2MQEueMVhxrzaED694Iel3HxfSc4ngn"/>
+</div>
+<div class="absolute -bottom-8 -left-8 bg-white p-8 text-[#0A192F] shadow-2xl hidden lg:block border-l-4 border-amber-500">
+<p class="font-h3-subheading text-h3-subheading italic mb-1">"Growth is not the goal; <br/>endurance is."</p>
+<p class="font-label-caps text-label-caps uppercase text-slate-500">Foundation Principles</p>
+</div>
+</div>
+</div>
+<!-- Background Accent -->
+<div class="absolute top-0 right-0 w-1/3 h-full bg-slate-900/50 -skew-x-12 translate-x-1/2"></div>
+</section>
+<!-- ESG Frameworks Section (Bento Grid Style) -->
+<section class="py-[120px] bg-white">
+<div class="max-w-[1280px] mx-auto px-8">
+<div class="mb-20 text-center max-w-3xl mx-auto">
+<h2 class="font-h2-authority text-h2-authority text-[#0A192F] mb-6">The ESG Pillars</h2>
+<p class="font-body-md text-body-md text-slate-600">Aligning corporate operations with global sustainability standards through precise data validation and strategic governance.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Environmental -->
+<div class="p-10 border border-slate-200 hover:border-amber-500 transition-colors duration-500 flex flex-col h-full">
+<div class="mb-8">
+<span class="material-symbols-outlined text-4xl text-[#0A192F]" data-icon="eco">eco</span>
+</div>
+<h3 class="font-h3-subheading text-h3-subheading text-[#0A192F] mb-4">Environmental</h3>
+<p class="font-body-md text-body-md text-slate-600 mb-8 flex-grow">Decarbonization strategies, resource efficiency audits, and supply chain circularity analysis.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-sm font-label-caps text-slate-500">
+<span class="w-2 h-2 bg-[#0A192F]"></span> Net-Zero Alignment
+                        </li>
+<li class="flex items-center gap-3 text-sm font-label-caps text-slate-500">
+<span class="w-2 h-2 bg-[#0A192F]"></span> Circular Economy
+                        </li>
+</ul>
+</div>
+<!-- Social -->
+<div class="p-10 border border-slate-200 hover:border-amber-500 transition-colors duration-500 flex flex-col h-full bg-slate-50">
+<div class="mb-8">
+<span class="material-symbols-outlined text-4xl text-[#0A192F]" data-icon="groups">groups</span>
+</div>
+<h3 class="font-h3-subheading text-h3-subheading text-[#0A192F] mb-4">Social</h3>
+<p class="font-body-md text-body-md text-slate-600 mb-8 flex-grow">Human capital management, stakeholder engagement, and ethical labor standards across global operations.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-sm font-label-caps text-slate-500">
+<span class="w-2 h-2 bg-[#0A192F]"></span> Talent Resilience
+                        </li>
+<li class="flex items-center gap-3 text-sm font-label-caps text-slate-500">
+<span class="w-2 h-2 bg-[#0A192F]"></span> Ethical Sourcing
+                        </li>
+</ul>
+</div>
+<!-- Governance -->
+<div class="p-10 border border-slate-200 hover:border-amber-500 transition-colors duration-500 flex flex-col h-full">
+<div class="mb-8">
+<span class="material-symbols-outlined text-4xl text-[#0A192F]" data-icon="balance">balance</span>
+</div>
+<h3 class="font-h3-subheading text-h3-subheading text-[#0A192F] mb-4">Governance</h3>
+<p class="font-body-md text-body-md text-slate-600 mb-8 flex-grow">Board oversight protocols, transparent disclosure frameworks, and institutional risk mitigation.</p>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-sm font-label-caps text-slate-500">
+<span class="w-2 h-2 bg-[#0A192F]"></span> Compliance Audits
+                        </li>
+<li class="flex items-center gap-3 text-sm font-label-caps text-slate-500">
+<span class="w-2 h-2 bg-[#0A192F]"></span> Board Optimization
+                        </li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Long-Term Value Creation (Asymmetric Layout) -->
+<section class="py-[120px] bg-slate-100 overflow-hidden">
+<div class="max-w-[1280px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+<div class="lg:col-span-7">
+<div class="bg-white p-16 border-l-8 border-amber-500">
+<span class="font-label-caps text-label-caps text-slate-400 mb-4 block uppercase">The Methodology</span>
+<h2 class="font-h2-authority text-h2-authority text-[#0A192F] mb-8">Transcending the Quarterly Cycle</h2>
+<div class="space-y-8">
+<div class="flex gap-6">
+<span class="font-h2-authority text-amber-500 opacity-50">01</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-[#0A192F] mb-2 uppercase">Horizon Planning</h4>
+<p class="font-body-md text-body-md text-slate-600">Identifying macro-trends and structural shifts that will redefine market leadership over 10-20 year intervals.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<span class="font-h2-authority text-amber-500 opacity-50">02</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-[#0A192F] mb-2 uppercase">Risk Calibration</h4>
+<p class="font-body-md text-body-md text-slate-600">Applying stress tests to business models against climate volatility, regulatory shifts, and technological displacement.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<span class="font-h2-authority text-amber-500 opacity-50">03</span>
+<div>
+<h4 class="font-label-caps text-label-caps text-[#0A192F] mb-2 uppercase">Capital Deployment</h4>
+<p class="font-body-md text-body-md text-slate-600">Reallocating resources toward assets that provide durable yields in a low-carbon, high-accountability economy.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="aspect-square bg-[#0A192F] p-2">
+<img class="w-full h-full object-cover brightness-75 contrast-125" data-alt="Executive hand pointing at a sophisticated data dashboard on a screen with abstract light rays and blue tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcc5_7XQo3oByQKZNWsEmCjQB--MfwAVokBS4qNLo4fXaKEv2Fr5UU39zjRtuf6Yw-2PBsfbUR1C5IXonUH5Wp1qOs3qrY7GbVkGcZyzr0WcQimZ4oQCJkGbVSRvQA5sA0QOHt4mmlnWia6b6vOJkBrzH1Mnnz615He8KmGO-CyMpc6-bKeE9MPB1mLDAQx0yw4SOwnZxc4ZbWLEIn_Lv1O3fpLmPz7iB4nayBLCnIY40aSUf67yL4X3_PwiN0ok0dnxUVn1HiZwZv"/>
+</div>
+<!-- Trust Signal Chip -->
+<div class="absolute -top-6 -right-6 trust-badge px-6 py-6 font-label-caps text-center">
+<span class="block text-2xl font-bold">15%</span>
+<span class="text-[10px] uppercase tracking-tighter">Avg. Efficiency Gain</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Sustainable Business Models (Case Study Grid) -->
+<section class="py-[120px] bg-white">
+<div class="max-w-[1280px] mx-auto px-8">
+<div class="flex justify-between items-end mb-16">
+<div class="max-w-2xl">
+<h2 class="font-h2-authority text-h2-authority text-[#0A192F] mb-4">Innovation in Action</h2>
+<p class="font-body-md text-body-md text-slate-600">Designing models that decouple growth from environmental impact while maximizing social utility.</p>
+</div>
+<button class="border-b border-[#0A192F] pb-1 font-label-caps text-label-caps text-[#0A192F] hover:text-amber-500 hover:border-amber-500 transition-all">VIEW ALL CASE STUDIES</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<article class="group cursor-pointer">
+<div class="relative overflow-hidden mb-6 aspect-video">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Abstract solar panel grid with deep blue reflections and high-end industrial design aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYclhYm870iD9HY81Hrb-kKyLtEsfLo4liXAthjck0Bdd0Hpj7keaeSwWhMOoTQ7YzwrSBf-H6x5qQwIBZnTvZt6A7hbi-ZhrAbuixxzkz4Z29WxoaJdo-to9vtW1UTE6vUkGhwWQ-xTmyNDe-m6oHf16KBd0oAbg6YCtugHOO-AoBAzYVa18aOlQtJQReC9e3oldg0eY6okbSNBbCBCsjACpZZepe9sDywKYfQz4NUQ78RL5GgjQneOVcDQTGtDuOn9yi_PWxrrfH"/>
+<div class="absolute inset-0 bg-[#0A192F]/20 group-hover:bg-transparent transition-colors"></div>
+</div>
+<div class="flex items-center gap-4 mb-4">
+<span class="text-xs font-label-caps text-amber-600 border border-amber-600 px-2 py-1">ENERGY</span>
+<span class="text-xs font-citation text-slate-400">Published Oct 2023</span>
+</div>
+<h3 class="font-h3-subheading text-h3-subheading text-[#0A192F] mb-3 group-hover:text-amber-600 transition-colors">Circular Energy Systems in Manufacturing</h3>
+<p class="font-body-md text-body-md text-slate-600">How a Tier 1 automotive supplier transitioned to 100% closed-loop energy recovery within 36 months.</p>
+</article>
+<article class="group cursor-pointer">
+<div class="relative overflow-hidden mb-6 aspect-video">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Digital representation of complex data networks and green nodes symbolizing growth and technology" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZCXRypxMgosDttECW5vfYPIK_oB_H4hBL6EGKAGgOX99tkaHctSAWopYyUGdINI2w2kyDoFqj1-QOSW7KNndjweF-IVCGCKNCz9C569C0FmFJlLb65pOrnA-jtiPCAMwJEXNUzi2gD7n95ipzNf5aAH0H0jbDhd3-RR7U24ryCSp-pqGiBEwqSRwVyMqaOrRRRsuCl9Mv9tF5IWY2QAp4JPpXfogDkcwX5YgwW9ocveP3bS6OBB2ZTnsm7F4qybnq5Vgcn2K-grRy"/>
+<div class="absolute inset-0 bg-[#0A192F]/20 group-hover:bg-transparent transition-colors"></div>
+</div>
+<div class="flex items-center gap-4 mb-4">
+<span class="text-xs font-label-caps text-amber-600 border border-amber-600 px-2 py-1">TECHNOLOGY</span>
+<span class="text-xs font-citation text-slate-400">Published Jan 2024</span>
+</div>
+<h3 class="font-h3-subheading text-h3-subheading text-[#0A192F] mb-3 group-hover:text-amber-600 transition-colors">AI-Driven Impact Reporting</h3>
+<p class="font-body-md text-body-md text-slate-600">Utilizing predictive analytics to validate real-time ESG metrics for institutional investor confidence.</p>
+</article>
+</div>
+</div>
+</section>
+<!-- Innovation Lab (R&D Section) -->
+<section class="py-[120px] bg-[#0A192F] text-white">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row items-stretch border border-slate-700">
+<div class="w-full md:w-1/2 p-16 flex flex-col justify-center border-r border-slate-700">
+<span class="font-label-caps text-label-caps text-amber-500 mb-6 tracking-widest uppercase">The Innovation Lab</span>
+<h2 class="font-h2-authority text-h2-authority mb-8">Redefining Policy &amp; Strategy</h2>
+<p class="font-body-lg text-body-lg text-slate-300 mb-10">Our R&amp;D unit collaborates with global think tanks to develop proprietary tools for policy impact simulation and strategic resilience modeling.</p>
+<div class="grid grid-cols-2 gap-8">
+<div>
+<p class="text-3xl font-h3-subheading text-amber-500 mb-1">24+</p>
+<p class="text-[10px] font-label-caps uppercase text-slate-400">Patented Frameworks</p>
+</div>
+<div>
+<p class="text-3xl font-h3-subheading text-amber-500 mb-1">12</p>
+<p class="text-[10px] font-label-caps uppercase text-slate-400">Annual Whitepapers</p>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/2 relative bg-slate-900 group">
+<img class="w-full h-full object-cover opacity-60 mix-blend-overlay" data-alt="Engineers working in a high-tech laboratory with blueprint displays and sophisticated equipment in soft cool lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPjMkrCu4ejdGPc7IZtc2AdIp7t-AyVZIDCoBE5_A8ul0JxbgisNu8PCy2C4Xwdkk1X7Wudpb0iVugvp9bUYatdPuNi5DxI8ll8X5LimkvnRxiL8gA_TW0jcy2eQJ9ahP5EanIzBWF1qS6JdhWXhGwPXnFbOe9z48Ll_rux4EOAe1ldi9grrS8DXQQPXtdcBAm-ukyLkUZIS92tBeNeJqDQ0a_6btWu8HLwHHWBOsRD-V5nQdl6Fh98OQ_woba4NJsnJ9XVZgr1bUv"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="bg-white/10 backdrop-blur-md border border-white/20 p-8 flex flex-col items-center gap-4 hover:bg-white hover:text-[#0A192F] transition-all duration-500">
+<span class="material-symbols-outlined text-4xl" data-icon="lightbulb">lightbulb</span>
+<span class="font-label-caps text-label-caps tracking-[0.2em] uppercase">Access R&amp;D Archive</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Signals Row -->
+<section class="py-12 bg-white border-b border-slate-200">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-wrap justify-between items-center opacity-50 grayscale gap-8">
+<span class="font-label-caps text-sm">GLOBAL COMPLIANCE ALLIANCE</span>
+<span class="font-label-caps text-sm">SUSTAINABLE FINANCE FORUM</span>
+<span class="font-label-caps text-sm">UN GLOBAL COMPACT MEMBER</span>
+<span class="font-label-caps text-sm">INSTITUTIONAL INVESTOR NETWORK</span>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="py-section-gap bg-surface">
+<div class="max-w-[1280px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-16">
+<div class="lg:col-span-5">
+<div class="mb-6 flex items-center gap-4">
+<span class="w-12 h-px bg-[#d4af37]"></span>
+<span class="font-label-caps text-label-caps text-[#d4af37] uppercase tracking-widest">Inquiry &amp; Engagement</span>
+</div>
+<h2 class="font-h2-authority text-h2-authority text-[#0A192F] mb-8">Consult with our ESG Partners</h2>
+<p class="font-body-md text-body-md text-slate-600 mb-12 max-w-md">
+                    Connect with our lead strategists to discuss aligning your institutional objectives with global sustainability benchmarks.
+                </p>
+<div class="space-y-6">
+<div class="flex items-center gap-4 group">
+<div class="w-12 h-12 flex items-center justify-center border border-slate-200 group-hover:border-[#d4af37] transition-colors">
+<span class="material-symbols-outlined text-[#0A192F]" data-icon="mail">mail</span>
+</div>
+<div>
+<p class="text-[10px] font-label-caps text-slate-400 uppercase">General Inquiries</p>
+<p class="font-body-md text-[#0A192F]">partnerships@strategic-insight.com</p>
+</div>
+</div>
+<a class="flex items-center gap-4 group cursor-pointer" href="https://wa.me/919979021275" target="_blank">
+<div class="w-12 h-12 flex items-center justify-center border border-slate-200 group-hover:bg-[#25D366] group-hover:border-[#25D366] transition-all">
+<span class="material-symbols-outlined text-[#0A192F] group-hover:text-white" data-icon="chat">chat</span>
+</div>
+<div>
+<p class="text-[10px] font-label-caps text-slate-400 uppercase">WhatsApp Concierge</p>
+<p class="font-body-md text-[#0A192F]">+91 99790 21275</p>
+</div>
+</a>
+</div>
+</div>
+<div class="lg:col-span-7 bg-white p-8 md:p-12 border border-slate-200 shadow-sm relative">
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-caps text-[10px] uppercase text-slate-500 tracking-wider">Full Name</label>
+<input class="w-full bg-slate-50 border border-slate-200 p-4 font-body-md text-sm focus:bg-white transition-all" placeholder="Enter name" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-[10px] uppercase text-slate-500 tracking-wider">Institutional Email</label>
+<input class="w-full bg-slate-50 border border-slate-200 p-4 font-body-md text-sm focus:bg-white transition-all" placeholder="email@organization.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-[10px] uppercase text-slate-500 tracking-wider">Organization</label>
+<input class="w-full bg-slate-50 border border-slate-200 p-4 font-body-md text-sm focus:bg-white transition-all" placeholder="Corporate or institutional entity" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-[10px] uppercase text-slate-500 tracking-wider">Strategic Inquiry</label>
+<textarea class="w-full bg-slate-50 border border-slate-200 p-4 font-body-md text-sm focus:bg-white transition-all resize-none" placeholder="Briefly describe your objectives..." rows="4"></textarea>
+</div>
+<button class="w-full md:w-auto bg-[#0A192F] text-white px-12 py-4 font-label-caps text-label-caps tracking-[0.2em] uppercase hover:bg-slate-800 transition-colors" type="submit">
+                        Submit Inquiry
+                    </button>
+</form>
+<!-- Form Accent -->
+<div class="absolute -bottom-1 -right-1 w-12 h-12 border-b-2 border-r-2 border-[#d4af37]"></div>
+</div>
+</div>
+</section>
+<div id="scg-resources" data-page="sustainability" data-title="ESG Frameworks </main> Whitepapers"></div></main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-[#0A192F] border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-[1280px] mx-auto py-16 px-8 flex flex-col md:flex-row justify-between items-center gap-8 w-full">
+<div class="flex flex-col gap-4">
+<div class="font-bold text-lg text-[#0A192F] dark:text-white">Shiva Consultancy Group</div>
+<p class="font-serif text-xs tracking-wide text-slate-500 dark:text-slate-400">© 2024 Shiva Consultancy Group. Institutional Wisdom. Sustainable Growth. All Rights Reserved.</p>
+</div>
+<nav class="flex flex-wrap justify-center gap-8">
+<a class="font-serif text-xs tracking-wide text-slate-500 dark:text-slate-400 opacity-80 hover:opacity-100 transition-opacity hover:border-b hover:border-amber-500" href="#">ESG Disclosure</a>
+<a class="font-serif text-xs tracking-wide text-slate-500 dark:text-slate-400 opacity-80 hover:opacity-100 transition-opacity hover:border-b hover:border-amber-500" href="#">Methodology</a>
+<a class="font-serif text-xs tracking-wide text-slate-500 dark:text-slate-400 opacity-80 hover:opacity-100 transition-opacity hover:border-b hover:border-amber-500" href="#">Privacy Policy</a>
+<a class="font-serif text-xs tracking-wide text-slate-500 dark:text-slate-400 opacity-80 hover:opacity-100 transition-opacity hover:border-b hover:border-amber-500" href="#">Terms of Service</a>
+<a class="font-serif text-xs tracking-wide text-slate-500 dark:text-slate-400 opacity-80 hover:opacity-100 transition-opacity hover:border-b hover:border-amber-500" href="#">Annual Review</a>
+</nav>
+</div>
+</footer>
+<script src="/assets/config.js"></script><script type="module" src="/assets/resources-widget.js"></script></body></html>

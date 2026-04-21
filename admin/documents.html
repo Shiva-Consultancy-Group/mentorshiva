@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Document Vault | SCG Partner Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/admin.css"/>
+</head>
+<body>
+<script src="../assets/config.js"></script>
+<script type="module">
+  import { mountShell, fmtDate, escapeHtml, flash, openModal, closeModal } from '../assets/admin.js';
+  import { supabase, publicDocumentUrl, humanFileSize } from '../assets/supabase.js';
+
+  const ctx = await mountShell({
+    activePath: '/admin/documents.html',
+    title: 'Document Vault',
+    subtitle: 'Upload whitepapers, briefs, and case studies — assign to specific pages or the shared library'
+  });
+  if (!ctx) throw new Error('no session');
+  const { body, actions, profile } = ctx;
+
+  actions.innerHTML = `<button class="btn btn--primary" id="newDoc">+ Upload document</button>`;
+
+  const PAGES = [
+    { slug: 'home', label: 'Home (mentorshiva.com)' },
+    { slug: 'lobbying', label: 'Lobbying Vault' },
+    { slug: 'msme', label: 'MSME Hub' },
+    { slug: 'intelligence', label: 'Intelligence Portal' },
+    { slug: 'sustainability', label: 'Sustainability & ESG' },
+    { slug: 'shared', label: 'Shared library (all pages)' }
+  ];
+  const CATS = ['whitepaper','case_study','brief','policy','report','template','other'];
+
+  body.innerHTML = `
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="Search title, description…"/>
+      <select id="fpage"><option value="">All pages</option>${PAGES.map(p => `<option value="${p.slug}">${p.label}</option>`).join('')}</select>
+      <select id="fcat"><option value="">All categories</option>${CATS.map(c => `<option value="${c}">${c}</option>`).join('')}</select>
+      <label style="display:flex;align-items:center;gap:.4rem;margin:0">
+        <input type="checkbox" id="fpub" style="width:auto"/> Public only
+      </label>
+      <span style="margin-left:auto;font-size:.8rem;color:#75777e" id="count"></span>
+    </div>
+    <div id="rows"></div>
+  `;
+
+  const $q = document.getElementById('q');
+  const $fp = document.getElementById('fpage');
+  const $fc = document.getElementById('fcat');
+  const $fpub = document.getElementById('fpub');
+  const $rows = document.getElementById('rows');
+  const $count = document.getElementById('count');
+  let all = [];
+
+  async function load() {
+    const { data, error } = await supabase
+      .from('documents').select('*').order('created_at', { ascending: false });
+    if (error) { flash(body, error.message, 'err'); return; }
+    all = data || [];
+    draw();
+  }
+
+  function draw() {
+    const q = $q.value.trim().toLowerCase();
+    const fp = $fp.value, fc = $fc.value, fpub = $fpub.checked;
+    const rows = all.filter(r => {
+      if (fp && r.page_slug !== fp) return false;
+      if (fc && r.category !== fc) return false;
+      if (fpub && !r.is_public) return false;
+      if (!q) return true;
+      return [r.title, r.description, r.file_name].join(' ').toLowerCase().includes(q);
+    });
+    $count.textContent = `${rows.length} of ${all.length}`;
+    $rows.innerHTML = rows.length ? `
+      <table>
+        <thead><tr><th>Title</th><th>Page</th><th>Category</th><th>Size</th><th>Visibility</th><th>Downloads</th><th>Added</th><th></th></tr></thead>
+        <tbody>${rows.map(r => `
+          <tr data-id="${r.id}">
+            <td><strong>${escapeHtml(r.title)}</strong><br/><small style="color:#75777e">${escapeHtml(r.file_name)}</small></td>
+            <td>${escapeHtml(r.page_slug)}</td>
+            <td><span class="badge">${escapeHtml(r.category)}</span></td>
+            <td>${humanFileSize(r.file_size)}</td>
+            <td>${r.is_public ? '<span class="badge badge--qualified">public</span>' : '<span class="badge badge--lost">private</span>'}</td>
+            <td>${r.download_count}</td>
+            <td>${fmtDate(r.created_at)}</td>
+            <td>
+              <a class="btn btn--secondary" target="_blank" rel="noopener" href="${publicDocumentUrl(r.storage_path)}">Open</a>
+              <button class="btn btn--secondary" data-edit>Edit</button>
+              <button class="btn btn--danger" data-del>Del</button>
+            </td>
+          </tr>`).join('')}</tbody>
+      </table>` : `<div class="empty"><h3>Vault empty</h3><p>Click <em>+ Upload document</em> to publish your first whitepaper, brief, or report.</p></div>`;
+    $rows.querySelectorAll('tr[data-id]').forEach(tr => {
+      const r = all.find(x => x.id === tr.dataset.id);
+      tr.querySelector('[data-edit]').addEventListener('click', () => openEdit(r));
+      tr.querySelector('[data-del]').addEventListener('click', async () => {
+        if (!confirm(`Delete "${r.title}"? The file will be removed from storage.`)) return;
+        await supabase.storage.from(window.SCG_CONFIG.storageBucket).remove([r.storage_path]);
+        const { error } = await supabase.from('documents').delete().eq('id', r.id);
+        if (error) { flash(body, error.message, 'err'); return; }
+        await load(); flash(body, 'Document removed.', 'ok');
+      });
+    });
+  }
+
+  function openEdit(r) {
+    const m = openModal(`
+      <header><h3>Edit document</h3><button data-close type="button">×</button></header>
+      <div class="body">
+        <div><label>Title</label><input id="e_title" value="${escapeHtml(r.title)}"/></div>
+        <div><label>Description</label><textarea id="e_desc" rows="3">${escapeHtml(r.description || '')}</textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div><label>Page</label><select id="e_page">${PAGES.map(p => `<option value="${p.slug}" ${r.page_slug === p.slug ? 'selected' : ''}>${p.label}</option>`).join('')}</select></div>
+          <div><label>Category</label><select id="e_cat">${CATS.map(c => `<option value="${c}" ${r.category === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+        </div>
+        <label style="display:flex;align-items:center;gap:.5rem">
+          <input type="checkbox" id="e_pub" style="width:auto" ${r.is_public ? 'checked' : ''}/> Public (visible to site visitors)
+        </label>
+        <div class="actions"><button class="btn btn--secondary" data-close type="button">Cancel</button><button class="btn btn--primary" id="e_save" type="button">Save</button></div>
+      </div>
+    `);
+    m.querySelector('#e_save').addEventListener('click', async () => {
+      const payload = {
+        title: m.querySelector('#e_title').value.trim(),
+        description: m.querySelector('#e_desc').value.trim() || null,
+        page_slug: m.querySelector('#e_page').value,
+        category: m.querySelector('#e_cat').value,
+        is_public: m.querySelector('#e_pub').checked
+      };
+      const { error } = await supabase.from('documents').update(payload).eq('id', r.id);
+      if (error) { flash(body, error.message, 'err'); return; }
+      closeModal(); await load(); flash(body, 'Document updated.', 'ok');
+    });
+  }
+
+  document.getElementById('newDoc').addEventListener('click', () => {
+    const m = openModal(`
+      <header><h3>Upload new document</h3><button data-close type="button">×</button></header>
+      <div class="body">
+        <label class="drop" id="udrop"><strong>Click to select file</strong><br/><small>PDF / DOC / XLSX / PPT / image · up to 50 MB</small>
+          <input id="ufile" type="file" style="display:none" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.webp,.txt,.csv,.zip"/>
+        </label>
+        <div id="upicked" style="font-size:.85rem;color:#75777e"></div>
+        <div><label>Title *</label><input id="u_title" placeholder="Q4 2026 Compliance Brief"/></div>
+        <div><label>Description</label><textarea id="u_desc" rows="2" placeholder="Short summary shown on public page"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div><label>Page</label><select id="u_page">${PAGES.map(p => `<option value="${p.slug}">${p.label}</option>`).join('')}</select></div>
+          <div><label>Category</label><select id="u_cat">${CATS.map(c => `<option value="${c}">${c}</option>`).join('')}</select></div>
+        </div>
+        <label style="display:flex;align-items:center;gap:.5rem">
+          <input type="checkbox" id="u_pub" style="width:auto" checked/> Public (downloadable by site visitors)
+        </label>
+        <div class="actions"><button class="btn btn--secondary" data-close type="button">Cancel</button><button class="btn btn--primary" id="u_go" type="button">Upload</button></div>
+      </div>
+    `);
+    const fileInput = m.querySelector('#ufile');
+    m.querySelector('#udrop').addEventListener('click', (e) => { if (e.target.tagName !== 'INPUT') fileInput.click(); });
+    fileInput.addEventListener('change', () => {
+      const f = fileInput.files[0];
+      m.querySelector('#upicked').textContent = f ? `${f.name} · ${humanFileSize(f.size)}` : '';
+      if (f && !m.querySelector('#u_title').value) m.querySelector('#u_title').value = f.name.replace(/\.[^.]+$/, '');
+    });
+    m.querySelector('#u_go').addEventListener('click', async () => {
+      const f = fileInput.files[0];
+      const title = m.querySelector('#u_title').value.trim();
+      if (!f) { alert('Choose a file first'); return; }
+      if (!title) { alert('Title is required'); return; }
+      const page_slug = m.querySelector('#u_page').value;
+      const category = m.querySelector('#u_cat').value;
+      const is_public = m.querySelector('#u_pub').checked;
+      const safe = f.name.replace(/[^\w.\-]+/g, '_');
+      const storage_path = `${page_slug}/${Date.now()}_${safe}`;
+      const { error: upErr } = await supabase.storage
+        .from(window.SCG_CONFIG.storageBucket)
+        .upload(storage_path, f, { contentType: f.type || 'application/octet-stream' });
+      if (upErr) { flash(body, 'Upload failed: ' + upErr.message, 'err'); return; }
+      const { error: insErr } = await supabase.from('documents').insert({
+        title, description: m.querySelector('#u_desc').value.trim() || null,
+        category, page_slug, storage_path,
+        file_name: f.name, file_size: f.size, mime_type: f.type || null,
+        is_public, uploaded_by: profile.id
+      });
+      if (insErr) {
+        await supabase.storage.from(window.SCG_CONFIG.storageBucket).remove([storage_path]);
+        flash(body, 'Save failed: ' + insErr.message, 'err'); return;
+      }
+      closeModal(); await load(); flash(body, 'Document uploaded.', 'ok');
+    });
+  });
+
+  [$q, $fp, $fc, $fpub].forEach(x => x.addEventListener('input', draw));
+  await load();
+</script>
+</body>
+</html>

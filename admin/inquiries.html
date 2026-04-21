@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inquiries | SCG Partner Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/admin.css"/>
+</head>
+<body>
+<script src="../assets/config.js"></script>
+<script type="module">
+  import { mountShell, fmtDate, escapeHtml, flash, openModal, closeModal } from '../assets/admin.js';
+  import { supabase } from '../assets/supabase.js';
+
+  const ctx = await mountShell({
+    activePath: '/admin/inquiries.html',
+    title: 'Inquiries',
+    subtitle: 'Live inbox of inquiries submitted from mentorshiva.com'
+  });
+  if (!ctx) throw new Error('no session');
+  const { body, actions } = ctx;
+
+  actions.innerHTML = `<a class="btn btn--primary" href="./contacts.html">Open CRM</a>`;
+
+  const statuses = ['new','contacted','qualified','won','lost','spam'];
+  const sources = ['home','lobbying','msme','intelligence','sustainability','other'];
+
+  body.innerHTML = `
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="Search name, org, email…"/>
+      <select id="fstatus">
+        <option value="">All statuses</option>
+        ${statuses.map(s => `<option value="${s}">${s}</option>`).join('')}
+      </select>
+      <select id="fsource">
+        <option value="">All sources</option>
+        ${sources.map(s => `<option value="${s}">${s}</option>`).join('')}
+      </select>
+      <span style="margin-left:auto;font-size:.8rem;color:#75777e" id="count"></span>
+    </div>
+    <div id="rows"></div>
+  `;
+
+  const $q = document.getElementById('q');
+  const $fs = document.getElementById('fstatus');
+  const $fsrc = document.getElementById('fsource');
+  const $rows = document.getElementById('rows');
+  const $count = document.getElementById('count');
+
+  let all = [];
+
+  async function load() {
+    const { data, error } = await supabase
+      .from('inquiries')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) { flash(body, error.message, 'err'); return; }
+    all = data || [];
+    draw();
+    // Auto-open if ?id=
+    const wantId = new URL(location.href).searchParams.get('id');
+    if (wantId) {
+      const hit = all.find(x => x.id === wantId);
+      if (hit) openDetail(hit);
+    }
+  }
+
+  function draw() {
+    const q = $q.value.trim().toLowerCase();
+    const fs = $fs.value, fsrc = $fsrc.value;
+    const rows = all.filter(r => {
+      if (fs && r.status !== fs) return false;
+      if (fsrc && r.source_page !== fsrc) return false;
+      if (!q) return true;
+      const blob = [r.full_name, r.organization, r.email, r.phone, r.message, r.inquiry_area].join(' ').toLowerCase();
+      return blob.includes(q);
+    });
+    $count.textContent = `${rows.length} of ${all.length}`;
+    $rows.innerHTML = rows.length ? `
+      <table>
+        <thead><tr>
+          <th>Received</th><th>Contact</th><th>Email / Phone</th><th>Source</th>
+          <th>Status</th><th>Area</th><th></th>
+        </tr></thead>
+        <tbody>${rows.map(r => `
+          <tr data-id="${r.id}">
+            <td>${fmtDate(r.created_at)}</td>
+            <td><strong>${escapeHtml(r.full_name)}</strong><br/><small style="color:#75777e">${escapeHtml(r.organization || '—')}</small></td>
+            <td><a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a><br/><small style="color:#75777e">${escapeHtml(r.phone || '')}</small></td>
+            <td><span class="badge">${escapeHtml(r.source_page)}</span></td>
+            <td><span class="badge badge--${escapeHtml(r.status)}">${escapeHtml(r.status)}</span></td>
+            <td>${escapeHtml((r.inquiry_area || '').slice(0, 40))}${(r.inquiry_area || '').length > 40 ? '…' : ''}</td>
+            <td><button class="btn btn--secondary" data-open>Open</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>` : `<div class="empty"><h3>No matching inquiries</h3></div>`;
+    $rows.querySelectorAll('tr[data-id]').forEach(tr => {
+      tr.querySelector('[data-open]').addEventListener('click', () => {
+        const r = all.find(x => x.id === tr.dataset.id);
+        if (r) openDetail(r);
+      });
+    });
+  }
+
+  function openDetail(r) {
+    const m = openModal(`
+      <header><h3>Inquiry · ${escapeHtml(r.full_name)}</h3><button data-close type="button">×</button></header>
+      <div class="body">
+        <div><strong>Organization:</strong> ${escapeHtml(r.organization || '—')}</div>
+        <div><strong>Designation:</strong> ${escapeHtml(r.designation || '—')}</div>
+        <div><strong>Email:</strong> <a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a></div>
+        <div><strong>Phone:</strong> ${escapeHtml(r.phone || '—')}</div>
+        <div><strong>Industry / Business Type:</strong> ${escapeHtml(r.industry_sector || '—')}</div>
+        <div><strong>Service areas:</strong> ${escapeHtml(r.inquiry_area || '—')}</div>
+        <div><strong>Source:</strong> ${escapeHtml(r.source_page)} &nbsp; <strong>Received:</strong> ${fmtDate(r.created_at)}</div>
+        <hr style="border:none;border-top:1px solid #c5c6cd"/>
+        <div><strong>Message</strong><pre style="white-space:pre-wrap;font-family:inherit;font-size:.85rem;color:#191c1d;background:#f3f4f5;padding:.75rem;margin:.25rem 0 0">${escapeHtml(r.message || '—')}</pre></div>
+        <div>
+          <label for="mstatus">Status</label>
+          <select id="mstatus">
+            ${['new','contacted','qualified','won','lost','spam'].map(s => `<option value="${s}" ${r.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label for="mnotes">Internal notes</label>
+          <textarea id="mnotes" rows="3" placeholder="Call outcomes, next steps…">${escapeHtml(r.notes || '')}</textarea>
+        </div>
+        <div class="actions">
+          <button class="btn btn--secondary" data-close type="button">Cancel</button>
+          <button class="btn btn--primary" id="msave" type="button">Save changes</button>
+        </div>
+      </div>
+    `);
+    m.querySelector('#msave').addEventListener('click', async () => {
+      const status = m.querySelector('#mstatus').value;
+      const notes = m.querySelector('#mnotes').value;
+      const { error } = await supabase.from('inquiries').update({ status, notes }).eq('id', r.id);
+      if (error) { flash(body, error.message, 'err'); return; }
+      closeModal();
+      await load();
+      flash(body, 'Inquiry updated.', 'ok');
+    });
+  }
+
+  [$q, $fs, $fsrc].forEach(x => x.addEventListener('input', draw));
+  await load();
+
+  // Realtime: new submissions show up instantly
+  supabase.channel('inquiries-feed')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inquiries' }, async () => {
+      await load();
+      flash(body, 'New inquiry received.', 'ok');
+    })
+    .subscribe();
+</script>
+</body>
+</html>

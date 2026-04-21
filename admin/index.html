@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard | SCG Partner Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/admin.css"/>
+</head>
+<body>
+<script src="../assets/config.js"></script>
+<script type="module">
+  import { mountShell, fmtDate, escapeHtml } from '../assets/admin.js';
+  import { supabase } from '../assets/supabase.js';
+
+  const ctx = await mountShell({
+    activePath: '/admin/index.html',
+    title: 'Dashboard',
+    subtitle: 'Pipeline overview and recent activity across mentorshiva.com'
+  });
+  if (!ctx) throw new Error('no session');
+
+  const { body } = ctx;
+
+  // KPI counts (use count-only queries for efficiency)
+  const [{ count: inqNew }, { count: inqTotal }, { count: contacts }, { count: docs }] = await Promise.all([
+    supabase.from('inquiries').select('*', { count: 'exact', head: true }).eq('status', 'new'),
+    supabase.from('inquiries').select('*', { count: 'exact', head: true }),
+    supabase.from('contacts').select('*', { count: 'exact', head: true }),
+    supabase.from('documents').select('*', { count: 'exact', head: true })
+  ]);
+
+  const kpiHTML = `
+    <div class="cards-grid">
+      <div class="kpi">
+        <span class="kpi__label">New Inquiries</span>
+        <span class="kpi__value">${inqNew ?? 0}</span>
+        <span class="kpi__hint">Awaiting first response</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi__label">Total Inquiries</span>
+        <span class="kpi__value">${inqTotal ?? 0}</span>
+        <span class="kpi__hint">All time</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi__label">Contacts on File</span>
+        <span class="kpi__value">${contacts ?? 0}</span>
+        <span class="kpi__hint">Clients + prospects</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi__label">Documents Published</span>
+        <span class="kpi__value">${docs ?? 0}</span>
+        <span class="kpi__hint">Vault + public library</span>
+      </div>
+    </div>`;
+
+  // Latest inquiries
+  const { data: recent } = await supabase
+    .from('inquiries')
+    .select('id, full_name, organization, email, source_page, status, created_at')
+    .order('created_at', { ascending: false })
+    .limit(8);
+
+  let rowsHTML = (recent || []).map(r => `
+    <tr>
+      <td>${fmtDate(r.created_at)}</td>
+      <td><strong>${escapeHtml(r.full_name)}</strong><br/><small style="color:#75777e">${escapeHtml(r.organization || '—')}</small></td>
+      <td><a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a></td>
+      <td><span class="badge">${escapeHtml(r.source_page)}</span></td>
+      <td><span class="badge badge--${escapeHtml(r.status)}">${escapeHtml(r.status)}</span></td>
+      <td><a href="./inquiries.html?id=${r.id}">View →</a></td>
+    </tr>`).join('');
+
+  body.insertAdjacentHTML('beforeend', kpiHTML);
+  body.insertAdjacentHTML('beforeend', `
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin:1.25rem 0 .75rem">
+      <h2 style="font-size:1.15rem">Recent Inquiries</h2>
+      <a class="btn btn--secondary" href="./inquiries.html">Open Inbox</a>
+    </div>
+    ${rowsHTML ? `
+      <table>
+        <thead><tr><th>Received</th><th>Contact</th><th>Email</th><th>Source</th><th>Status</th><th></th></tr></thead>
+        <tbody>${rowsHTML}</tbody>
+      </table>` : `<div class="empty"><h3>No inquiries yet</h3><p>Public form submissions will appear here in real time.</p></div>`}
+  `);
+</script>
+</body>
+</html>

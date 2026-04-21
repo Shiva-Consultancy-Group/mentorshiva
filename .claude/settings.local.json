@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:stitch.withgoogle.com)",
+      "Read(//Users/rakeshjha/Downloads/**)",
+      "Bash(unzip -l /Users/rakeshjha/Downloads/stitch_scg_global_strategic_portal.zip)",
+      "Bash(unzip -q /Users/rakeshjha/Downloads/stitch_scg_global_strategic_portal.zip -d _source)",
+      "Bash(find \"/Users/rakeshjha/Public/Stitch Project/_source/stitch_scg_global_strategic_portal/\" -name \"code.html\" -exec wc -l {} \\\\;)",
+      "Bash(grep -oE 'href=\"[^\"]*\"[^>]*>[A-Za-z &]{3,}' lobbying_liaisoning_vault/code.html)",
+      "Bash(grep -oE 'href=\"[^\"]*\"[^>]*>[A-Za-z &]{3,}' msme_growth_hub/code.html)",
+      "Bash(grep -n \"Consult with Us\\\\|Book a Strategic Consultation\\\\|Download Firm Profile\\\\|Explore Full Library\\\\|Lobbying Vault Access\\\\|MSME Hub Directory\\\\|Access Portal\\\\|View Intelligence Reports\\\\|Shiva Consultancy Group$\" index.html)",
+      "Bash(gh repo *)",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__list_organizations",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__list_projects",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__list_tables",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__list_migrations",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__apply_migration",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__get_project_url",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__get_publishable_keys",
+      "WebFetch(domain:inquiry.msmeintelligence.in)",
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__execute_sql"
+    ]
+  }
+}

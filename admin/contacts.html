@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contacts CRM | SCG Partner Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/admin.css"/>
+</head>
+<body>
+<script src="../assets/config.js"></script>
+<script type="module">
+  import { mountShell, fmtDate, escapeHtml, flash, openModal, closeModal } from '../assets/admin.js';
+  import { supabase } from '../assets/supabase.js';
+
+  const ctx = await mountShell({
+    activePath: '/admin/contacts.html',
+    title: 'Contacts CRM',
+    subtitle: 'Unified directory of clients, prospects, partners, and government liaisons'
+  });
+  if (!ctx) throw new Error('no session');
+  const { body, actions, profile } = ctx;
+
+  actions.innerHTML = `
+    <button class="btn btn--secondary" id="promoteInq">Promote inquiry</button>
+    <button class="btn btn--primary" id="newContact">+ New contact</button>
+  `;
+
+  const CATS = ['client','prospect','partner','govt','media','other'];
+
+  body.innerHTML = `
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="Search name, organization, email, tag…"/>
+      <select id="fcat"><option value="">All categories</option>${CATS.map(c => `<option value="${c}">${c}</option>`).join('')}</select>
+      <span style="margin-left:auto;font-size:.8rem;color:#75777e" id="count"></span>
+    </div>
+    <div id="rows"></div>
+  `;
+
+  const $q = document.getElementById('q');
+  const $fc = document.getElementById('fcat');
+  const $rows = document.getElementById('rows');
+  const $count = document.getElementById('count');
+  let all = [];
+
+  async function load() {
+    const { data, error } = await supabase
+      .from('contacts').select('*').order('created_at', { ascending: false });
+    if (error) { flash(body, error.message, 'err'); return; }
+    all = data || [];
+    draw();
+  }
+
+  function draw() {
+    const q = $q.value.trim().toLowerCase();
+    const fc = $fc.value;
+    const rows = all.filter(r => {
+      if (fc && r.category !== fc) return false;
+      if (!q) return true;
+      const blob = [r.full_name, r.organization, r.email, r.phone, r.designation, (r.tags || []).join(' '), r.notes].join(' ').toLowerCase();
+      return blob.includes(q);
+    });
+    $count.textContent = `${rows.length} of ${all.length}`;
+    $rows.innerHTML = rows.length ? `
+      <table>
+        <thead><tr><th>Name</th><th>Organization</th><th>Email / Phone</th><th>Category</th><th>Tags</th><th>Added</th><th></th></tr></thead>
+        <tbody>${rows.map(r => `
+          <tr data-id="${r.id}">
+            <td><strong>${escapeHtml(r.full_name)}</strong><br/><small style="color:#75777e">${escapeHtml(r.designation || '')}</small></td>
+            <td>${escapeHtml(r.organization || '—')}</td>
+            <td>${r.email ? `<a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a>` : '—'}<br/><small style="color:#75777e">${escapeHtml(r.phone || '')}</small></td>
+            <td><span class="badge">${escapeHtml(r.category || 'other')}</span></td>
+            <td>${(r.tags || []).map(t => `<span class="badge" style="margin-right:.25rem">${escapeHtml(t)}</span>`).join(' ') || '—'}</td>
+            <td>${fmtDate(r.created_at)}</td>
+            <td>
+              <button class="btn btn--secondary" data-edit>Edit</button>
+              <button class="btn btn--danger" data-del>Del</button>
+            </td>
+          </tr>`).join('')}</tbody>
+      </table>` : `<div class="empty"><h3>No contacts yet</h3><p>Use <em>+ New contact</em> or <em>Promote inquiry</em> to populate.</p></div>`;
+    $rows.querySelectorAll('tr[data-id]').forEach(tr => {
+      const r = all.find(x => x.id === tr.dataset.id);
+      tr.querySelector('[data-edit]').addEventListener('click', () => openEditor(r));
+      tr.querySelector('[data-del]').addEventListener('click', async () => {
+        if (!confirm(`Delete contact ${r.full_name}?`)) return;
+        const { error } = await supabase.from('contacts').delete().eq('id', r.id);
+        if (error) { flash(body, error.message, 'err'); return; }
+        await load(); flash(body, 'Contact removed.', 'ok');
+      });
+    });
+  }
+
+  function openEditor(r = {}) {
+    const m = openModal(`
+      <header><h3>${r.id ? 'Edit contact' : 'New contact'}</h3><button data-close type="button">×</button></header>
+      <div class="body">
+        <div><label>Full name *</label><input id="f_name" value="${escapeHtml(r.full_name || '')}"/></div>
+        <div><label>Organization</label><input id="f_org" value="${escapeHtml(r.organization || '')}"/></div>
+        <div><label>Designation</label><input id="f_desig" value="${escapeHtml(r.designation || '')}"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div><label>Email</label><input id="f_email" type="email" value="${escapeHtml(r.email || '')}"/></div>
+          <div><label>Phone</label><input id="f_phone" value="${escapeHtml(r.phone || '')}"/></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <div><label>Category</label><select id="f_cat">${CATS.map(c => `<option value="${c}" ${(r.category || 'prospect') === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+          <div><label>Source</label><input id="f_source" placeholder="e.g. Referral · Website" value="${escapeHtml(r.source || '')}"/></div>
+        </div>
+        <div><label>Tags (comma-separated)</label><input id="f_tags" value="${escapeHtml((r.tags || []).join(', '))}"/></div>
+        <div><label>Notes</label><textarea id="f_notes" rows="3">${escapeHtml(r.notes || '')}</textarea></div>
+        <div class="actions">
+          <button class="btn btn--secondary" data-close type="button">Cancel</button>
+          <button class="btn btn--primary" id="f_save" type="button">${r.id ? 'Save changes' : 'Add contact'}</button>
+        </div>
+      </div>
+    `);
+    m.querySelector('#f_save').addEventListener('click', async () => {
+      const payload = {
+        full_name: m.querySelector('#f_name').value.trim(),
+        organization: m.querySelector('#f_org').value.trim() || null,
+        designation: m.querySelector('#f_desig').value.trim() || null,
+        email: m.querySelector('#f_email').value.trim() || null,
+        phone: m.querySelector('#f_phone').value.trim() || null,
+        category: m.querySelector('#f_cat').value,
+        source: m.querySelector('#f_source').value.trim() || null,
+        tags: m.querySelector('#f_tags').value.split(',').map(s => s.trim()).filter(Boolean),
+        notes: m.querySelector('#f_notes').value.trim() || null,
+        created_by: r.created_by || profile.id
+      };
+      if (!payload.full_name) { alert('Name is required'); return; }
+      const { error } = r.id
+        ? await supabase.from('contacts').update(payload).eq('id', r.id)
+        : await supabase.from('contacts').insert(payload);
+      if (error) { flash(body, error.message, 'err'); return; }
+      closeModal(); await load(); flash(body, r.id ? 'Contact updated.' : 'Contact added.', 'ok');
+    });
+  }
+
+  document.getElementById('newContact').addEventListener('click', () => openEditor());
+  document.getElementById('promoteInq').addEventListener('click', async () => {
+    const { data } = await supabase.from('inquiries').select('*').order('created_at', { ascending: false }).limit(50);
+    if (!data?.length) { alert('No inquiries yet.'); return; }
+    const m = openModal(`
+      <header><h3>Promote inquiry to contact</h3><button data-close type="button">×</button></header>
+      <div class="body">
+        <label>Choose an inquiry</label>
+        <select id="picker">${data.map(i => `<option value="${i.id}">${escapeHtml(i.full_name)} · ${escapeHtml(i.organization || '—')} · ${escapeHtml(i.email)}</option>`).join('')}</select>
+        <div class="actions"><button class="btn btn--secondary" data-close type="button">Cancel</button><button class="btn btn--primary" id="go" type="button">Promote</button></div>
+      </div>
+    `);
+    m.querySelector('#go').addEventListener('click', async () => {
+      const id = m.querySelector('#picker').value;
+      const inq = data.find(x => x.id === id);
+      const { error } = await supabase.from('contacts').insert({
+        full_name: inq.full_name, organization: inq.organization, designation: inq.designation,
+        email: inq.email, phone: inq.phone, category: 'prospect',
+        source: `Inquiry · ${inq.source_page}`, tags: [inq.source_page].filter(Boolean),
+        notes: inq.message, created_by: profile.id
+      });
+      if (error) { flash(body, error.message, 'err'); return; }
+      await supabase.from('inquiries').update({ status: 'contacted' }).eq('id', id);
+      closeModal(); await load(); flash(body, 'Inquiry promoted to contact.', 'ok');
+    });
+  });
+
+  [$q, $fc].forEach(x => x.addEventListener('input', draw));
+  await load();
+</script>
+</body>
+</html>
