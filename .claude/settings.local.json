@@ -18,7 +18,28 @@
       "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__get_project_url",
       "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__get_publishable_keys",
       "WebFetch(domain:inquiry.msmeintelligence.in)",
-      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__execute_sql"
+      "mcp__2d1b8710-c5d3-48c5-9c0e-db7bfa211190__execute_sql",
+      "Bash(gh api *)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__find",
+      "mcp__Claude_in_Chrome__read_page",
+      "mcp__Claude_in_Chrome__computer",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "mcp__Claude_in_Chrome__form_input",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f\\\\\"status: {d.get\\('status'\\)}\\\\ncname: {d.get\\('cname'\\)}\\\\nhtml_url: {d.get\\('html_url'\\)}\\\\nhttps_enforced: {d.get\\('https_enforced'\\)}\\\\nprotected_domain_state: {d.get\\('protected_domain_state'\\)}\\\\\"\\)\")",
+      "Bash(dig +short mentorshiva.com A @8.8.8.8)",
+      "Bash(dig +short www.mentorshiva.com CNAME @8.8.8.8)",
+      "Bash(curl -skI --max-time 6 http://mentorshiva.com)",
+      "Bash(curl -skI --max-time 6 https://rksjha.github.io/mentorshiva/)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f'status: {d.get\\(\\\\\"status\\\\\"\\)}\\\\nhttps_enforced: {d.get\\(\\\\\"https_enforced\\\\\"\\)}\\\\nprotected_domain_state: {d.get\\(\\\\\"protected_domain_state\\\\\"\\)}\\\\npending_domain_unverified_at: {d.get\\(\\\\\"pending_domain_unverified_at\\\\\"\\)}'\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(f'status: {d.get\\(\\\\\"status\\\\\"\\)}\\\\nhttps_certificate.state: {\\(d.get\\(\\\\\"https_certificate\\\\\"\\) or {}\\).get\\(\\\\\"state\\\\\"\\)}\\\\nhttps_enforced: {d.get\\(\\\\\"https_enforced\\\\\"\\)}\\\\nprotected_domain_state: {d.get\\(\\\\\"protected_domain_state\\\\\"\\)}'\\)\")",
+      "Bash(cat)",
+      "Bash(chmod +x /tmp/enforce_https_mentorshiva.sh)",
+      "Bash(/tmp/enforce_https_mentorshiva.sh)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); c=d.get\\('https_certificate'\\) or {}; print\\(f'status: {d.get\\(\\\\\"status\\\\\"\\)}\\\\nhttps_enforced: {d.get\\(\\\\\"https_enforced\\\\\"\\)}\\\\ncert.state: {c.get\\(\\\\\"state\\\\\"\\)}\\\\ncert.description: {c.get\\(\\\\\"description\\\\\"\\)}'\\)\")",
+      "Read(//tmp/**)",
+      "Bash(curl -skI --max-time 6 https://mentorshiva.com)"
     ]
   }
 }

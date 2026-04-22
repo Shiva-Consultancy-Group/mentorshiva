@@ -58,3 +58,4 @@ Just open `index.html` in a browser — no build step. Form submissions and docu
 ## Deployment
 
 GitHub Pages auto-deploys on push to `main`. DNS points `mentorshiva.com` (apex) and `www` to GitHub Pages.
+
